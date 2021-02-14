@@ -12,3 +12,19 @@ def confusion_matrix(true, pred):
         columns=['pred:{:}'.format(x) for x in unique_label]
     )
     return(cmtx)
+
+def plot_roc(y_true, y_pred):
+    
+    from sklearn.metrics import roc_curve, auc
+    import matplotlib.pyplot as plt
+
+    fpr, tpr, thresholds = roc_curve(y_true, y_pred )
+    roc_auc = auc(fpr, tpr)
+    plt.plot(fpr, tpr, 'b', label='AUC = %0.3f' % roc_auc)
+    plt.plot([0,1],[0,1], 'r--')
+    plt.xlim([-0.1,1.0])
+    plt.xlim([-0.1,1.01])
+    plt.show()
+    return(roc_auc)
+    
+
