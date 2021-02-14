@@ -1,4 +1,4 @@
-FROM jupyter/scipy-notebook:0ce64578df46
+FROM jupyter/scipy-notebook:aec555e49be6
 
 RUN conda install xgboost
 
