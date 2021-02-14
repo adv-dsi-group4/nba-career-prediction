@@ -24,7 +24,6 @@ def plot_roc(y_true, y_pred):
     plt.plot([0,1],[0,1], 'r--')
     plt.xlim([-0.1,1.0])
     plt.xlim([-0.1,1.01])
-    plt.show()
-    return(roc_auc)
+    return(plt)
     
 
