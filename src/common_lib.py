@@ -50,7 +50,7 @@ class DataReader:
     def split_data(self, data, relative_path = "../"):
         data = pd.DataFrame(data)
         target = data.pop('TARGET_5Yrs')
-        X_train, X_val, y_train, y_val = train_test_split(data, target, test_size = 0.2, random_state=8 )
+        X_train, X_val, y_train, y_val = train_test_split(data, target, test_size = 0.2, random_state=8, shuffle=True )
 
         # Save the splited data
         np.save(relative_path+ "data/processed/X_train", X_train)
