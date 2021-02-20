@@ -7,6 +7,9 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn import preprocessing
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from imblearn.over_sampling import SMOTE
 
 class NBARawData(Enum):
     '''List of members to identify the name of each dataset stored in the raw_data folder.
@@ -76,3 +79,44 @@ class DataReader:
         return selected_columns
 
     
+    def scale_features_by_standard_scaler(self, df):
+        '''
+        '''
+    
+
+        scaler = StandardScaler()
+        train_df_scaled = scaler.fit_transform(df)
+        
+        train_df_scaled = pd.DataFrame(train_df_scaled)
+        train_df_scaled.columns = df.columns
+        return train_df_scaled
+    
+    def polynomialize_data(self, df, degree):
+        '''
+        '''
+        # Polynomialise
+        poly = PolynomialFeatures(degree)
+        data_poly = poly.fit_transform(df)
+        
+#         data_poly = pd.DataFrame(data_poly)
+#         data_poly.columns = df.columns
+        return data_poly
+        
+        return(data_poly)
+    
+    def plot_class_balance(self, df):
+        '''
+        '''
+        
+        pl = pd.DataFrame(df)
+        pl.columns = ['Target']
+        pl.Target.value_counts().plot(kind="bar", title="Count Target")
+        
+    def resample_data_upsample_smote(self, X, y):
+        '''
+        '''
+        
+        sm = SMOTE(random_state = 23, sampling_strategy = 1.0)
+        X_res, y_res = sm.fit_sample(X, y.ravel())
+        return( X_res, y_res)
+        
