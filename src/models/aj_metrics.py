@@ -18,13 +18,19 @@ def plot_roc(y_true, y_pred):
     from sklearn.metrics import roc_curve, auc
     import matplotlib.pyplot as plt
 
-    fpr, tpr, thresholds = roc_curve(y_true, y_pred )
+    fpr, tpr = roc_curve(y_true, y_pred )
     roc_auc = auc(fpr, tpr)
     plt.plot(fpr, tpr, 'b', label='AUC = %0.3f' % roc_auc)
     plt.plot([0,1],[0,1], 'r--')
     plt.xlim([-0.1,1.0])
     plt.xlim([-0.1,1.01])
     return(plt)
+
+def visualise_accuray(model, X, y, pred):
+
+    from sklearn.metrics import plot_roc_curve,  accuracy_score
+    plot_roc_curve(model, X, y)   
+    print("Accuracy Score:", accuracy_score(y, pred))
     
 def eval_report(m, X, true, pred):
     
