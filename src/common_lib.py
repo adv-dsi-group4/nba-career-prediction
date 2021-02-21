@@ -38,8 +38,8 @@ class DataReader:
                a data frame that store the dataset
         '''
         if (not isinstance(source,NBARawData)):
-            raise Exception("argument should be filled with SuicideRawData or SuicideProcessedData. "
-                            "Try SuicideRawData.AGE_STANDARDIZED and/or SuicideProcessedData.FACILITIES")
+            raise Exception("argument should be filled with NBARawData "
+                            "Try NBARawData.TRAIN and/or NBARawData.TEST")
             
         #read the data and load them into a dataframe
         data = pd.read_csv(self.filepath[source])
@@ -60,12 +60,12 @@ class DataReader:
         np.save(relative_path+ "data/processed/X_train", y_val)
         return(X_train, X_val, y_train, y_val)
 
-    def select_feature_by_correlation(self, data):
+    def select_feature_by_correlation(self, data, columns_to_drop):
         '''This function select the features according to the correlation result.
             The features which have correlation > 0.9 are filter out.
         '''
         
-        data.drop(["Id", "Id_old"], axis=1, inplace=True )
+        data.drop(columns_to_drop, axis=1, inplace=True )
         corr = data.corr()
         sns.heatmap(corr)
 
@@ -98,11 +98,10 @@ class DataReader:
         poly = PolynomialFeatures(degree)
         data_poly = poly.fit_transform(df)
         
-#         data_poly = pd.DataFrame(data_poly)
-#         data_poly.columns = df.columns
+        data_poly = pd.DataFrame(data_poly)
+        # data_poly.columns = df.columns
         return data_poly
         
-        return(data_poly)
     
     def plot_class_balance(self, df):
         '''
