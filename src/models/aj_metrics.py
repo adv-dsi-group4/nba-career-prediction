@@ -32,4 +32,23 @@ def visualise_accuray(model, X, y, pred):
     plot_roc_curve(model, X, y)   
     print("Accuracy Score:", accuracy_score(y, pred))
     
+def eval_report(m, X, true, pred):
+    
+    import numpy as np
+    import pandas as pd
+    from sklearn import metrics
 
+    unique_label = np.unique([true, pred])
+    cmtx = pd.DataFrame(
+        metrics.confusion_matrix(true, pred, labels=unique_label), 
+        index=['true:{:}'.format(x) for x in unique_label], 
+        columns=['pred:{:}'.format(x) for x in unique_label]
+    )
+    print(cmtx)
+    print(metrics.classification_report(true, pred))
+    
+    import matplotlib.pyplot as plt  
+    metrics.plot_roc_curve(m, X, pred)
+    plt.show()
+    
+        
