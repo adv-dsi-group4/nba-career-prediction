@@ -85,11 +85,12 @@ class DataReader:
     
 
         scaler = StandardScaler()
-        train_df_scaled = scaler.fit_transform(df)
+        df_scaled = scaler.fit_transform(df)
         
-        train_df_scaled = pd.DataFrame(train_df_scaled)
-        train_df_scaled.columns = df.columns
-        return train_df_scaled
+        # Set as pd.dataframe and Re-apply column names and
+        scaled_df = pd.DataFrame(df_scaled)
+        scaled_df.columns = df.columns
+        return scaled_df
     
     def polynomialize_data(self, df, degree):
         '''
@@ -118,4 +119,20 @@ class DataReader:
         sm = SMOTE(random_state = 23, sampling_strategy = 1.0)
         X_res, y_res = sm.fit_sample(X, y.ravel())
         return( X_res, y_res)
+    
+    def clean_negatives(self, strategy, df):
+        '''
+        # Negative values do not make sense in this context
+        #Define negative cleaning function
+        '''
+    
+        if strategy=='abs':
+            df = abs(df)
+        if strategy=='null':
+            df[df < 0] = 0
+        if strategy=='mean':
+            df[df < 0] = None
+            df.fillna(df.mean(), inplace=True)      
+
+        return(df)
         
