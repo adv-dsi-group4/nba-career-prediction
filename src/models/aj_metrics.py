@@ -1,5 +1,18 @@
 def confusion_matrix(true, pred):
-    # Confusion matrix with labels
+    ''' Generate the confusion matrix in the dataframe format
+    
+    Parameters
+    ----------
+    true : an array
+        An array of original target values to compare with
+    pred: an array
+        An array of predicted value
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas  dataframe with true: 0 / 1 in rows and pred: 0/1 in columns
+    '''
 
     import numpy as np
     import pandas as pd
@@ -12,25 +25,6 @@ def confusion_matrix(true, pred):
         columns=['pred:{:}'.format(x) for x in unique_label]
     )
     return(cmtx)
-
-def plot_roc(y_true, y_pred):
-    
-    from sklearn.metrics import roc_curve, auc
-    import matplotlib.pyplot as plt
-
-    fpr, tpr = roc_curve(y_true, y_pred )
-    roc_auc = auc(fpr, tpr)
-    plt.plot(fpr, tpr, 'b', label='AUC = %0.3f' % roc_auc)
-    plt.plot([0,1],[0,1], 'r--')
-    plt.xlim([-0.1,1.0])
-    plt.xlim([-0.1,1.01])
-    return(plt)
-
-def visualise_accuray(model, X, y, pred):
-
-    from sklearn.metrics import plot_roc_curve,  accuracy_score
-    plot_roc_curve(model, X, y)   
-    print("Accuracy Score:", accuracy_score(y, pred))
     
 def eval_report(m, X, true, pred):
     
