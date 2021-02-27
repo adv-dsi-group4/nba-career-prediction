@@ -1,5 +1,18 @@
 def confusion_matrix(true, pred):
-    # Confusion matrix with labels
+    ''' Generate the confusion matrix in the dataframe format
+    
+    Parameters
+    ----------
+    true : an array
+        An array of original target values to compare with
+    pred: an array
+        An array of predicted value
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas  dataframe with true: 0 / 1 in rows and pred: 0/1 in columns
+    '''
 
     import numpy as np
     import pandas as pd
