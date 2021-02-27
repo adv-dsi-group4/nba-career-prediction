@@ -1,4 +1,7 @@
-FROM jupyter/scipy-notebook:0ce64578df46
+FROM jupyter/scipy-notebook:5cb007f03275
+
+RUN conda install -c conda-forge imbalanced-learn
+
 RUN conda install xgboost
 
 RUN conda install boto3
