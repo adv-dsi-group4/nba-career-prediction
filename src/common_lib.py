@@ -48,6 +48,27 @@ class DataReader:
         return(data)
 
     def split_data(self, data, relative_path = "../"):
+        ''' Split the given dataset into two sets randlomly
+            such as Train and Validation sets by 80:20 ratio and 
+            save the split data into the project's /data/processed directory 
+            for later reuse during the experiment.
+    
+        Argument:
+        ----------
+        data : a panda dataframe
+            A dataframe to split
+        relative_path: a relative path string
+            A relative path string to save the splited data
+ 
+        Returns
+        -------
+        X_train: A panda dataframe with all the independent variables without the target column. 
+                It is 80% of the original dataset which is meant for model training
+        X_val : A panda dataframe with all the independent variables. 
+                It is 20% of the original dataset which is meant for model validation
+        y_train: A separate array of target column values from training set(X_train)
+        y_val:  A separate array of target column values from validation set(X_val)      
+        '''
         data = pd.DataFrame(data)
         target = data.pop('TARGET_5Yrs')
         X_train, X_val, y_train, y_val = train_test_split(data, target, test_size = 0.2, random_state=8, shuffle=True )
@@ -61,8 +82,21 @@ class DataReader:
         return(X_train, X_val, y_train, y_val)
 
     def select_feature_by_correlation(self, data, columns_to_drop):
-        '''This function select the features according to the correlation result.
+        '''This function generates the correlation heat map
+            select the features according to the correlation result.
             The features which have correlation > 0.9 are filter out.
+
+        Argument:
+        ----------
+        data: a panda dataframe
+            to examine the correlation among the features
+        columns_to_drop: a list of columns 
+            to exclude in the correlation analysis   
+
+        Returns
+        -------
+        selected_columns: An array of selected columns which have correlation < 0.9 
+
         '''
         
         data.drop(columns_to_drop, axis=1, inplace=True )
@@ -81,9 +115,16 @@ class DataReader:
     
     def scale_features_by_standard_scaler(self, df):
         '''
-        '''
-    
+        This function scales all the features included in the dataframe using Standard Scaler
 
+        Arguments:
+        ----------
+        df: a panda dataframe with all the features to be scaled
+
+        Return:
+        -------
+        scaled_df: a panda dataframe with all the scaled features keeping the original column names
+        '''
         scaler = StandardScaler()
         df_scaled = scaler.fit_transform(df)
         
@@ -93,19 +134,43 @@ class DataReader:
         return scaled_df
     
     def polynomialize_data(self, df, degree):
+
         '''
+        This function transfrom and Generate a new feature matrix consisting of all polynomial combinations of the features with 
+        degree less than or equal to the specified degree given in the second argument
+
+        Arguments:
+        ----------
+        df: a panda dataframe with all the features to be polynomialised
+        degree: integer
+                It is a degree to be applyed polynomial such as power 2 or 3
+
+        Returns:
+        -------
+        data_poly: a panda dataframe
+                 a dataframe with the polynomial combinations of the features     
         '''
         # Polynomialise
         poly = PolynomialFeatures(degree)
         data_poly = poly.fit_transform(df)
         
         data_poly = pd.DataFrame(data_poly)
-        # data_poly.columns = df.columns
         return data_poly
         
     
     def plot_class_balance(self, df):
         '''
+        This function helps to visualises how balance the target class is 
+        by plotting the bar graph on the target's value count
+
+        Argument:
+        --------
+        df: a panda dataframe with the target feature
+
+        Return:
+        -------
+        The bar plot
+
         '''
         
         pl = pd.DataFrame(df)
@@ -114,6 +179,20 @@ class DataReader:
         
     def resample_data_upsample_smote(self, X, y):
         '''
+        This function does oversampling the minority class using SMOTE from imblearn and 
+        then fit and apply it in one step.
+
+        Arguments:
+        ----------
+        X: a panda dataframe with the features only
+        y: an array of target variable
+
+        Returns:
+        -------
+        X_res:  a panda dataframe
+                a transformed version of the dataset with all features after upsampling
+        y_res: an array of target values after upsampling
+
         '''
         
         sm = SMOTE(random_state = 23, sampling_strategy = 1.0)
@@ -122,8 +201,19 @@ class DataReader:
     
     def clean_negatives(self, strategy, df):
         '''
-        # Negative values do not make sense in this context
-        #Define negative cleaning function
+        This function does imputation to the dataset accorting to the strategy given in the arguemnt
+
+        Arguments:
+        ---------
+        strategy: a string
+                It is a strategy to apply to the imputation of the null / negative data.
+                The strategy must be 'abs' to make the absolute value, 'null' to replace with 0 or
+                'mean' to replace the negative with mean values.
+        Returns:
+        --------
+        df: a panda dataframe
+            A dataframe with features imputed
+          
         '''
     
         if strategy=='abs':
