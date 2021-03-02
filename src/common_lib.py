@@ -234,7 +234,18 @@ class DataReader:
 
 
 def confusion_matrix(true, pred):
-    # Confusion matrix with labels
+    '''
+    This function plots confusion matrix
+    
+    Arguments:
+    ---------
+    true: an array of target's original value
+    pred: an array of predicted values on target
+
+    Result:
+    -------
+    cmtx: ndarray of shape (n_classes, n_classes) in a dataframe format
+    '''
 
     import numpy as np
     import pandas as pd
@@ -248,12 +259,24 @@ def confusion_matrix(true, pred):
     )
     return(cmtx)
 
-def plot_roc(y_true, y_pred):
+def plot_roc(true, pred):
+     '''
+    This function plots confusion matrix
+    
+    Arguments:
+    ---------
+    true: an array of target's original value
+    pred: an array of predicted values on target
+
+    Result:
+    -------
+    cmtx: ndarray of shape (n_classes, n_classes) in a dataframe format
+    '''
 
     from sklearn.metrics import roc_curve, auc
     import matplotlib.pyplot as plt
 
-    fpr, tpr, thresh = roc_curve(y_true, y_pred)
+    fpr, tpr, thresh = roc_curve(true, pred)
     roc_auc = auc(fpr, tpr)
     print('AUC = %0.3f' % roc_auc)
     plt.plot(fpr, tpr, 'b', label='AUC = %0.3f' % roc_auc)
@@ -263,6 +286,20 @@ def plot_roc(y_true, y_pred):
     return(plt)
 
 def eval_report(true, pred):
+     '''
+    This function generates confusion matrix, classification report and ROC curve
+    
+    Arguments:
+    ---------
+    true: an array of target's original value
+    pred: an array of predicted values on target
+
+    Prints:
+    -------
+    matrix: ndarray of shape (n_classes, n_classes) 
+    matrix: Classification report in string format
+    plot: ROC curve displaying the accuracy of the model
+    '''
 
     import numpy as np
     import pandas as pd
